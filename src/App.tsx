@@ -1,37 +1,38 @@
 import { Toaster } from 'sonner'
 import './App.css'
 import Game from './components/Game'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import { chooseRandomWord } from './utils'
-import { WORD_LIST_URL } from './constants'
-
+import { GAME_MODE } from './constants'
+import useLocalStorage from './hooks/useLocalStorage'
+import { Button } from './components/ui/button'
+import { Settings } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover'
+import GameModeSelect from './components/Game/GameModeSelect'
+import { AnswerProvider } from './contexts/AnswerContext'
 function App() {
-  const [answer, setAnswer] = useState('');
-  useEffect(() => {
-    async function getWord() {
-      try {
-        const response = await fetch(WORD_LIST_URL);
-        if (!response) {
-          toast.error('Error fetch word list')
-        }
-        const wordList = await response.text();
-        const randomWord = chooseRandomWord(wordList.split("\n"));
-        setAnswer(randomWord.toUpperCase());
-
-      }
-      catch (error) {
-        console.error(error)
-      }
-    }
-    getWord();
-  }, [])
-
+  const [gameMode, setGameMode] = useLocalStorage('gameMode', GAME_MODE.NORMAL)
   return (
-    <div className="inline-block my-20">
-      <h1 className='scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance mb-4'>Word Game</h1>
-      <Toaster richColors position='top-center' />
-      <Game answer={answer} />
+    <div className="flex justify-center gap-10">
+      <div className="inline-block my-20">
+        <Toaster richColors position='top-center' />
+        <h1 className='scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance mb-4'>Word Game</h1>
+        <AnswerProvider>
+        <Game gameMode={gameMode} />
+        </AnswerProvider>
+      </div>
+      <div className='flex justify-end mt-8'>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="ghost">
+              <Settings />
+              Settings
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className='flex gap-2 items-center w-full'>
+            Game Mode:
+            <GameModeSelect gameMode={gameMode} setGameMode={setGameMode} />
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
   )
 }

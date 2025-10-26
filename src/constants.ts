@@ -11,8 +11,15 @@ export const LETTER_STATUS = {
   empty: "empty",
 } as const;
 
-export const GAME_MODE = {
-  normal: "normal",
-  hard: "hard",
-  bizserk: "biserk",
-};
+export const  GAME_MODE = {
+    NORMAL: 'Normal',
+    // HARD: 'Hard',
+    // WILDCARD: 'Wildcard',
+    LADDER: 'Ladder',
+}
+
+export const GAME_STATUS = {
+    FINISHED: 'FINISHED',
+    ACTIVE: "ACTIVE",
+    CONTINUE: "CONTINUE",
+}

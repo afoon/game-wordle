@@ -1,0 +1,38 @@
+import { useEffect, useState, useCallback, useMemo, type ReactNode } from "react";
+import { WORD_LIST_URL } from '../constants'
+import { chooseRandomWord } from "@/utils";
+import { AnswerContext } from "@/contexts";
+
+
+export const AnswerProvider = ({children}:{children: ReactNode}) => {
+  const [answer, setAnswer] = useState('');
+  const [wordList, setWordList] = useState('');
+  const resetWord = useCallback(() => {
+    const randomWord = chooseRandomWord(wordList.split("\n"));
+    setAnswer(randomWord);
+  }, [wordList])
+  useEffect(() => {
+    async function getWord() {
+      try {
+        const response = await fetch(WORD_LIST_URL);
+        if (!response) {
+          console.warn('Error fetching word list')
+        }
+        const wordListText = await response.text();
+        setWordList(wordListText);
+        const randomWord = chooseRandomWord(wordListText.split("\n"));
+        setAnswer(randomWord)
+      }
+      catch (error) {
+        console.warn(error)
+      }
+    }
+    getWord();
+  }, [])
+  const values = useMemo(() => {return {answer, resetWord}}, [answer, resetWord])
+  return (
+    <AnswerContext value={values}>
+        {children}
+    </AnswerContext>
+  )
+}

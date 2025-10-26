@@ -1,5 +1,7 @@
-import type { GameBoardType, Letter, LetterStatusType } from "./types";
+import type { GameBoardType, Letter, LetterStatusType } from "./types/gameboardTypes";
+import z from "zod";
 
+export const getRandomValue = (max: number, min: number = 0 ) => Math.floor(Math.random() * (max - min + 1))
 export const makeGameBoard = (maxGuesses: number): GameBoardType => {
   const board = new Array(maxGuesses);
   for (let i = 0; i < board.length; i++) {
@@ -14,9 +16,9 @@ export const makeGameBoard = (maxGuesses: number): GameBoardType => {
   return board;
 };
 export const chooseRandomWord = (wordList: string[]): string => {
-  const maxChoices = wordList.length + 1;
-  const index = Math.floor(Math.random() * maxChoices);
-  return wordList[index];
+  const index = getRandomValue(wordList.length)
+  const randomWord = wordList[index]
+  return randomWord.toUpperCase();
 };
 export const formatTypedGuess = (value: string, status: LetterStatusType) => {
   const letters = value.split("");
@@ -61,3 +63,6 @@ export const checkGuess = (guess: string, answer: string): Letter[] => {
   }
   return response;
 };
+
+export const guessSchema = z.string().min(5, "Not enough letters");
+export const validInput = z.string().max(5).regex(/^[A-Z]*$/)
