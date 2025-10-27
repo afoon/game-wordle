@@ -1,12 +1,14 @@
 
 import useNormalMode from "@/hooks/gameModes/useNormalMode"
-import type { GameModeType, GameRulesType } from "@/types/gameboardTypes"
+import type { GameRulesType } from "@/types/gameboardTypes"
 import useLadderMode from "@/hooks/gameModes/useLadderMode"
 import { GAME_MODE } from "@/constants"
 import GameMode from "./GameMode"
+import { useGameMode } from "@/contexts/"
 
 
-const Game = ({ gameMode}: { gameMode: GameModeType }) => {
+const Game = () => {
+    const {gameMode} = useGameMode()
     const BaseGame = ({ mode }: { mode: () => GameRulesType}) => <GameMode gameMode={mode} />
     switch (gameMode) {
         case GAME_MODE.LADDER:

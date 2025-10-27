@@ -22,4 +22,5 @@ export const GAME_STATUS = {
     FINISHED: 'FINISHED',
     ACTIVE: "ACTIVE",
     CONTINUE: "CONTINUE",
+    RESET: "RESET"
 }

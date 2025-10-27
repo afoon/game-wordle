@@ -5,7 +5,7 @@ import BoardRow from "./BoardRow"
 
 
 const GameBoard = ({ gameBoard }: { gameBoard: GameBoardType }) => {
-    return (<div className="flex flex-col gap-1">
+    return (<div className="flex flex-col gap-1 items-center">
         {gameBoard.map( guess => 
             <BoardRow key={guess.id} guess={guess}/>
         )}

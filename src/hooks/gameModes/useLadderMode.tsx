@@ -60,27 +60,31 @@ const useLadderMode = (): GameRulesType => {
         }
 
     }
+
+    const resetActiveGame = () => {
+        resetWord();
+        setGuessCount(0);
+        toast.dismiss()
+    }
     const incrementGameboard = () => {
         const nextMaxGuess = maxGuess + 1
         setMaxGuess(nextMaxGuess);
-        resetWord();
         setGameboard(makeGameBoard(nextMaxGuess))
-        toast.dismiss()
+        resetActiveGame()
+        setGameStatus(GAME_STATUS.RESET);
     }
     const decrementGameboard = () => {
         const nextMaxGuess = maxGuess - 1
         setMaxGuess(nextMaxGuess);
         setGameboard(makeGameBoard(nextMaxGuess))
-        resetWord();
-        toast.dismiss()
+        resetActiveGame();
+        setGameStatus(GAME_STATUS.RESET);
 
     }
     const resetGameboard = () => {
-        setGuessCount(0);
+        resetActiveGame()
         setGameStatus(GAME_STATUS.ACTIVE);
         setGameboard(makeGameBoard(maxGuess))
-        resetWord();
-        toast.dismiss();
     }
     return { updateGameBoard, submitGameBoard, resetGameboard, gameBoard, gameStatus }
 }

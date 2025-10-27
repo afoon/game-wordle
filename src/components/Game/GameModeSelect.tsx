@@ -1,26 +1,27 @@
 
 import { GAME_MODE } from "@/constants"
-import { Select, SelectValue, SelectTrigger, SelectItem, SelectContent, SelectLabel } from "../ui/select"
-import { SelectGroup } from "@radix-ui/react-select"
-import type { GameModeType } from "@/types/gameboardTypes"
+import { Select, SelectValue, SelectTrigger, SelectItem, SelectContent } from "../ui/select"
+import { useGameMode } from "@/contexts"
+import {memo} from 'react'
 
-
-const GameModeSelect = ({gameMode, setGameMode} : {gameMode: GameModeType, setGameMode: () => void; }) => {
+const GameModeSelect = () => {
+  const {gameMode, updateGameMode} = useGameMode()
+  const selectedValue: string = gameMode
     return (
-    <Select value={gameMode} onValueChange={setGameMode}>
+    <Select value={gameMode} onValueChange={(value) => {
+      updateGameMode(value)
+      }
+      }>
             <SelectTrigger>
-              <SelectValue placeholder="Select a Game Mode">{GAME_MODE[gameMode]}</SelectValue>
+              <SelectValue placeholder="Select a Game Mode">{selectedValue}</SelectValue>
             </SelectTrigger>
             <SelectContent align="start">
-              <SelectGroup>
-                <SelectLabel>Game Modes</SelectLabel>
             {
               Object.entries(GAME_MODE).map( ([key, mode]) => (<SelectItem key={`mode-${key}`} value={mode}>{mode}
                 </SelectItem>))
             }
-            </SelectGroup>
             </SelectContent>
           </Select>
             )
 }
-export default GameModeSelect
+export default memo(GameModeSelect)

@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent, memo, useContext } from "react"
+import { useState, type SyntheticEvent, memo, useContext, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "../ui/label"
 import { Button } from "../ui/button"
@@ -9,14 +9,23 @@ import type { GameRulesType } from "@/types/gameboardTypes"
 import { validInput, guessSchema } from "@/utils"
 import { GAME_STATUS } from "@/constants"
 import { AnswerContext } from "@/contexts/"
+import Keyboard from "@/components/Keyboard"
+import useLetterStatus from "@/hooks/useLetterStatus"
 
-
-const GameMode = ({gameMode }: { gameMode: () => GameRulesType }) => {
-    const {answer} = useContext(AnswerContext)
+const GameMode = ({ gameMode }: { gameMode: () => GameRulesType }) => {
+    const { answer } = useContext(AnswerContext)
     const [guess, setGuess] = useState('')
-    const {gameBoard, gameStatus, updateGameBoard, submitGameBoard, resetGameboard} = gameMode()
+    const [submittedGuess, setSubmittedGuess] = useState(['']);
+    const { gameBoard, gameStatus, updateGameBoard, submitGameBoard, resetGameboard } = gameMode()
+    const {updateUsedLetters, usedLetters, resetKeyboard } = useLetterStatus();
 
-    const gameOver = gameStatus === GAME_STATUS.FINISHED
+    const gameOver = gameStatus !== GAME_STATUS.ACTIVE && gameStatus !== GAME_STATUS.RESET
+
+    useEffect(() => {
+        if(gameStatus === GAME_STATUS.RESET){
+            resetKeyboard();
+        }
+    }, [gameStatus, resetKeyboard])
 
     const onGuessUpdate = (value: string) => {
         if (!validInput.safeParse(value).success) { return }
@@ -25,6 +34,9 @@ const GameMode = ({gameMode }: { gameMode: () => GameRulesType }) => {
     }
     const submitGuess = () => {
         submitGameBoard(guess, answer);
+        const nextSumbittedGuessList = [...submittedGuess, guess]
+        setSubmittedGuess(nextSumbittedGuessList);
+        updateUsedLetters(guess, answer);
         setGuess('')
     }
     const onSubmit = (e: SyntheticEvent) => {
@@ -40,6 +52,19 @@ const GameMode = ({gameMode }: { gameMode: () => GameRulesType }) => {
         }
 
     }
+    const onReset = () => {
+        resetGameboard();
+        setSubmittedGuess([''])
+        resetKeyboard();
+    }
+
+    const onKeyPress = (value: string) => {
+        if(gameOver){return}
+        const nextValue = guess + value;
+        if (!validInput.safeParse(nextValue).success) { return }
+        setGuess(nextValue);
+        updateGameBoard(nextValue);
+    }
     return (
         <div>
             <GameBoard gameBoard={gameBoard} />
@@ -50,7 +75,8 @@ const GameMode = ({gameMode }: { gameMode: () => GameRulesType }) => {
                     <Button type="submit" disabled={gameOver} aria-disabled={gameOver}>Enter</Button>
                 </div>
             </form>
-            {gameStatus === GAME_STATUS.FINISHED && <Button onClick={resetGameboard}> Play again ? </Button>}
+            {gameStatus === GAME_STATUS.FINISHED && <Button onClick={onReset}> Play again ? </Button>}
+            <Keyboard usedLetters={usedLetters} onKeyPress={onKeyPress} />
         </div>)
 }
 
