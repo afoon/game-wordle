@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-const useLocalStorage = (key: string, initialValue: any) => {
+const useLocalStorage = (key: string, initialValue: boolean | string) => {
     const [item, setItem] = useState(() => {
         try {
             const storedItem = localStorage.getItem(key);
@@ -19,7 +19,7 @@ const useLocalStorage = (key: string, initialValue: any) => {
             return initialValue;
         }
     })
-    const updateItem = (value) => {
+    const updateItem = (value: boolean | string) => {
         localStorage.setItem(key, JSON.stringify(value));
         setItem(value);
     }
