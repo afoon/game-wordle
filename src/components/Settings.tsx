@@ -19,7 +19,7 @@ const Settings = () => {
               Settings
             </Button>
           </PopoverTrigger>
-          <PopoverContent align="start" className='flex flex-col gap-2 items-center w-full'>
+          <PopoverContent align="start" className='flex flex-col gap-2 items-center w-90 mr-2'>
             <Field orientation={"horizontal"}>
               <FieldLabel>
             Game Mode:
