@@ -13,9 +13,7 @@ export const LETTER_STATUS = {
 
 export const  GAME_MODE = {
     NORMAL: 'Normal',
-    // HARD: 'Hard',
-    // WILDCARD: 'Wildcard',
-    LADDER: 'Ladder',
+    SCAFFOLD: 'Scaffold',
 }
 
 export const GAME_STATUS = {

@@ -6,7 +6,7 @@ import { type GameRulesType } from '@/types/gameboardTypes';
 import { Button } from "@/components/ui/button";
 import { AnswerContext } from "@/contexts/";
 
-const useLadderMode = (): GameRulesType => {
+const useScaffoldMode = (): GameRulesType => {
     const [gameBoard, setGameboard] = useState(makeGameBoard(MAX_GUESSES_ALLOWED))
     const [maxGuess, setMaxGuess] = useState(MAX_GUESSES_ALLOWED);
     const [totalGuesses, setTotalGuesses] = useState(0)
@@ -88,4 +88,4 @@ const useLadderMode = (): GameRulesType => {
     }
     return { updateGameBoard, submitGameBoard, resetGameboard, gameBoard, gameStatus }
 }
-export default useLadderMode
+export default useScaffoldMode
