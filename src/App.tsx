@@ -25,22 +25,22 @@ const Header = () => {
 function App() {
   return (
     <ThemeProvider>
-      <div className="flex justify-center gap-10">
-        <GameModeProvider>
-          <KeyboardProvider>
-            <div className="inline-block my-20">
+      <GameModeProvider>
+        <KeyboardProvider>
+          <div className="flex justify-center gap-10 flex-wrap-reverse my-26">
+            <div className="inline-block">
               <Toaster richColors position='top-center' />
               <Header />
               <AnswerProvider>
                 <Game />
               </AnswerProvider>
             </div>
-            <div className='flex justify-end mt-8'>
+            <div className='flex justify-end'>
               <Settings />
             </div>
-          </KeyboardProvider>
-        </GameModeProvider>
-      </div>
+          </div>
+        </KeyboardProvider>
+      </GameModeProvider>
     </ThemeProvider>
   )
 }

@@ -1,6 +1,6 @@
 export interface KeyboardProps {
     usedLetters: usedLetterType;
-    onKeyPress: (value: string) => void;
+    onKeyDown: (value: string) => void;
     row?: string[]
 }
 

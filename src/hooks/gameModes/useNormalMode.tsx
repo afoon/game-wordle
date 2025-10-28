@@ -37,7 +37,9 @@ const useNormalMode = () : GameRulesType => {
                 return;
             }
             if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(decode(answer), { duration: Infinity })
+                toast('', { duration: Infinity, description: () => <p>
+                    The word is {decode(answer)}
+                </p> })
                 setGameStatus(GAME_STATUS.FINISHED);
                 return;
             }
