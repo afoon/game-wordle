@@ -27,8 +27,8 @@ function App() {
     <ThemeProvider>
       <GameModeProvider>
         <KeyboardProvider>
-          <div className="flex justify-center gap-10 flex-wrap-reverse my-26">
-            <div className="inline-block">
+          <div className="flex justify-center gap-10 flex-wrap-reverse my-26 w-full">
+            <div className="inline-block max-w-full">
               <Toaster richColors position='top-center' />
               <Header />
               <AnswerProvider>
