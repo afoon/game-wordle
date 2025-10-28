@@ -3,7 +3,6 @@ import { toast } from "sonner"
 import { GAME_STATUS, MAX_GUESSES_ALLOWED } from "@/constants"
 import { checkGuess, formatTypedGuess, makeGameBoard, decode, encode } from "@/utils"
 import { type GameRulesType } from '@/types/gameboardTypes';
-import { Button } from "@/components/ui/button";
 import { AnswerContext } from "@/contexts/";
 
 const useScaffoldMode = (): GameRulesType => {
@@ -35,10 +34,9 @@ const useScaffoldMode = (): GameRulesType => {
             setTotalGuesses((prev) => prev + 1)
             if (encode(guess) === answer) {
                 if (maxGuess === 1) {
-                    toast.success(`Congrats!\n
-                        You made it to the end\n
-                        in ${totalGuesses} guesses.`, {
+                    toast.success('', {
                         duration: 8000,
+                        description: () => <p>Congrats!<br/>You made it to end after ${totalGuesses} guesses.</p>,
                     })
                     setGameStatus(GAME_STATUS.FINISHED)
                     setMaxGuess(MAX_GUESSES_ALLOWED);
@@ -47,16 +45,27 @@ const useScaffoldMode = (): GameRulesType => {
                 const nextMaxGuess = maxGuess - 1
                 setMaxGuess(nextMaxGuess);
                 setGameStatus(GAME_STATUS.CONTINUE)
-                toast.success("That was easy!\n Let's take away a guess", {
+                toast.success("", {
+                    description: () => <p className="text-nowrap">That was easy! Let's take a row away.</p>,
                     duration: Infinity,
-                    action: <Button className="bg-green-700 hover:bg-green-400 text-white" onClick={() => decrementGameboard()}>Next game</Button>
+                    action: {
+                        label: 'Next game',
+                        onClick: () => decrementGameboard()
+                    },
+                    actionButtonStyle: {backgroundColor: 'var(--color-green-600)'},
 
                 })
                 return;
             }
             if (nextCount === maxGuess) {
                 setGameStatus(GAME_STATUS.CONTINUE)
-                toast(`The word was ${decode(answer)}.\nHere's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
+                toast("", { 
+                    duration: Infinity, 
+                    description: () => <p className="text-nowrap">The word is <b>{decode(answer)}</b>.<br/>Maybe an extra row will help?</p>,                   
+                    action: {
+                        label: 'Next game',
+                        onClick: () => incrementGameboard()
+                    }})
                 return;
             }
             setGuessCount(nextCount);
