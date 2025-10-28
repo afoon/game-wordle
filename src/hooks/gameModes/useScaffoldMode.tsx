@@ -33,7 +33,7 @@ const useScaffoldMode = (): GameRulesType => {
             setGameboard(nextGameBoard);
             const nextCount = guessCount + 1;
             setTotalGuesses((prev) => prev + 1)
-            if (guess === answer) {
+            if (btoa(guess) === answer) {
                 if (maxGuess === 1) {
                     toast.success(`Congrats! You climbed the top of the ladder in ${totalGuesses} guesses.`, {
                         duration: 8000,
@@ -53,7 +53,7 @@ const useScaffoldMode = (): GameRulesType => {
                 return;
             }
             if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(`The word was ${answer}. Here's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
+                toast(`The word was ${atob(answer)}. Here's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
                 return;
             }
             setGuessCount(nextCount);

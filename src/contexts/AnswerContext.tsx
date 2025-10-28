@@ -8,7 +8,7 @@ export const AnswerProvider = ({children}:{children: ReactNode}) => {
   const [answer, setAnswer] = useState('');
   const [wordList, setWordList] = useState('');
   const resetWord = useCallback(() => {
-    const randomWord = chooseRandomWord(wordList.split("\n"));
+    const randomWord = chooseRandomWord(wordList);
     setAnswer(randomWord);
   }, [wordList])
   useEffect(() => {
@@ -19,8 +19,9 @@ export const AnswerProvider = ({children}:{children: ReactNode}) => {
           console.warn('Error fetching word list')
         }
         const wordListText = await response.text();
-        setWordList(wordListText);
-        const randomWord = chooseRandomWord(wordListText.split("\n"));
+        const encodedList = btoa(wordListText.toUpperCase())
+        setWordList(encodedList);
+        const randomWord = chooseRandomWord(encodedList);
         setAnswer(randomWord)
       }
       catch (error) {

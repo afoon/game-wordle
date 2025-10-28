@@ -12,13 +12,13 @@ const useLetterStatus = () => {
                 if (!used.has(letter)) {
                     used.add(letter);
                 }
-                if (guess.charAt(idx) === answer.charAt(idx)) {
+                if (guess.charAt(idx) === atob(answer).charAt(idx)) {
                     correct.add(letter);
                 }
             })
             // find matched letters from used
             used.forEach(letter => {
-                if (answer.includes(letter)) {
+                if (atob(answer).includes(letter)) {
                     matched.add(letter);
                 }
             })

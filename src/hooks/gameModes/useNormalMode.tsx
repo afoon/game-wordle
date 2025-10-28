@@ -29,7 +29,7 @@ const useNormalMode = () : GameRulesType => {
             }
             setGameboard(nextGameBoard);
             const nextCount = guessCount + 1;
-            if (guess === answer) {
+            if (btoa(guess) === answer) {
                 toast.success(`Congrats. You got in ${nextCount} ${nextCount > 1 ? "guesses" : "guess"}`, {
                     duration: 8000,
                 })
@@ -37,7 +37,7 @@ const useNormalMode = () : GameRulesType => {
                 return;
             }
             if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(answer, { duration: Infinity })
+                toast(atob(answer), { duration: Infinity })
                 setGameStatus(GAME_STATUS.FINISHED);
                 return;
             }
