@@ -18,7 +18,7 @@ const Key = ({ letter, usedLetters, onKeyDown, icon }: { letter: string, usedLet
     }
 
     return(
-    <button onClick={() => onKeyDown(letter)}className={`${color} font-bold py-3.5 px-2.5 sm:px-4 sm:py-5 rounded cursor-pointer`}>
+    <button onClick={() => onKeyDown(letter)}className={`${color} font-bold py-4 px-2.5 sm:px-4 sm:py-5 rounded cursor-pointer`}>
         {icon ? icon : letter.toUpperCase()}
     </button>
 )}
