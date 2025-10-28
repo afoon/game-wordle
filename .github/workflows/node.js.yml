@@ -26,8 +26,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install packages
-      run: pnpm install
+      run: npm install
     - name: Run tests
-      run: pnpm vitest
+      run: npm vitest
     - name: Build
-      run: pnpm build
+      run: npm build
