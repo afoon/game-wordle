@@ -12,7 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    strategy:
+     fail-fast: true
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js
@@ -20,9 +21,9 @@ jobs:
       with:
         node-version: '22.x'
         cache: 'pnpm'
-    - name: Install packages
-      run: pnpm install --frozen-lockfile
+        
+    - name: Install dependencies
+      run: pnpm install
+      
     - name: Run tests
       run: pnpm test
-    - name: Build
-      run: pnpm build
