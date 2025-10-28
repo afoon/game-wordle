@@ -2,7 +2,7 @@
 
 This is wordle game clone. Built in React ⚛️.
 
-### [Play Scaffoldle  🪜]('https://afoon-scaffoldle-game.netlify.app/')
+### [Play Scaffoldle  🪜](https://afoon-scaffoldle-game.netlify.app/)
 
 ![Screenshot of the game](src/assets/readme/app-image.png)
 
