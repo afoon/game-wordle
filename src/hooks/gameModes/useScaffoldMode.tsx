@@ -24,7 +24,7 @@ const useScaffoldMode = (): GameRulesType => {
     }
 
     const submitGameBoard = (guess: string, answer: string) => {
-        if (guessCount < MAX_GUESSES_ALLOWED) {
+        if (guessCount < maxGuess) {
             const nextGameBoard = [...gameBoard]
             nextGameBoard[guessCount] = {
                 id: `guess-${guessCount + 1}`,
@@ -35,7 +35,9 @@ const useScaffoldMode = (): GameRulesType => {
             setTotalGuesses((prev) => prev + 1)
             if (encode(guess) === answer) {
                 if (maxGuess === 1) {
-                    toast.success(`Congrats! You climbed the top of the ladder in ${totalGuesses} guesses.`, {
+                    toast.success(`Congrats!\n
+                        You made it to the end\n
+                        in ${totalGuesses} guesses.`, {
                         duration: 8000,
                     })
                     setGameStatus(GAME_STATUS.FINISHED)
@@ -45,15 +47,16 @@ const useScaffoldMode = (): GameRulesType => {
                 const nextMaxGuess = maxGuess - 1
                 setMaxGuess(nextMaxGuess);
                 setGameStatus(GAME_STATUS.CONTINUE)
-                toast.success("That was easy.\n Let's take away a guess", {
+                toast.success("That was easy!\n Let's take away a guess", {
                     duration: Infinity,
-                    action: <Button className="bg-green-700 hover:bg-green-400" onClick={() => decrementGameboard()}>Next game</Button>
+                    action: <Button className="bg-green-700 hover:bg-green-400 text-white" onClick={() => decrementGameboard()}>Next game</Button>
 
                 })
                 return;
             }
-            if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(`The word was ${decode(answer)}. Here's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
+            if (nextCount === maxGuess) {
+                setGameStatus(GAME_STATUS.CONTINUE)
+                toast(`The word was ${decode(answer)}.\nHere's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
                 return;
             }
             setGuessCount(nextCount);
@@ -68,16 +71,16 @@ const useScaffoldMode = (): GameRulesType => {
     }
     const incrementGameboard = () => {
         const nextMaxGuess = maxGuess + 1
+        resetActiveGame()
         setMaxGuess(nextMaxGuess);
         setGameboard(makeGameBoard(nextMaxGuess))
-        resetActiveGame()
         setGameStatus(GAME_STATUS.RESET);
     }
     const decrementGameboard = () => {
         const nextMaxGuess = maxGuess - 1
+        resetActiveGame();
         setMaxGuess(nextMaxGuess);
         setGameboard(makeGameBoard(nextMaxGuess))
-        resetActiveGame();
         setGameStatus(GAME_STATUS.RESET);
 
     }
