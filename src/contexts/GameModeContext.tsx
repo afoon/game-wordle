@@ -4,7 +4,7 @@ import { GameModeContext } from "./index";
 import { GAME_MODE } from "@/constants";
 
 export const GameModeProvider = ({ children }: { children: ReactNode }) => {
-    const [gameMode, setMode] = useLocalStorage('gameMode', GAME_MODE.NORMAL)
+    const [gameMode, setMode] = useLocalStorage('gameMode', GAME_MODE.SCAFFOLD)
     const updateGameMode = useCallback( (value: string) => {
         setMode(value)
     }, [setMode])

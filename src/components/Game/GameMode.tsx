@@ -66,16 +66,16 @@ const GameMode = ({ gameMode }: { gameMode: () => GameRulesType }) => {
         updateGameBoard(nextValue);
     }
     return (
-        <div>
+        <div className="flex flex-col gap-4">
             <GameBoard gameBoard={gameBoard} />
-            <form className="grid max-w-lg gap-2 my-4" onSubmit={onSubmit}>
+            {gameStatus === GAME_STATUS.FINISHED && <Button onClick={onReset} className="self-center"> Play again ? </Button>}
+            <form className="grid gap-2 my-4" onSubmit={onSubmit}>
                 <Label htmlFor="guess">Enter guess:</Label>
                 <div className="flex w-full gap-2 items-center">
                     <Input id="guess" value={guess} disabled={gameOver} aria-disabled={gameOver} onChange={e => onGuessUpdate(e.target.value.toUpperCase())} />
                     <Button type="submit" disabled={gameOver} aria-disabled={gameOver}>Enter</Button>
                 </div>
             </form>
-            {gameStatus === GAME_STATUS.FINISHED && <Button onClick={onReset}> Play again ? </Button>}
             <Keyboard usedLetters={usedLetters} onKeyPress={onKeyPress} />
         </div>)
 }
