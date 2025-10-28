@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { toast } from "sonner"
 import { GAME_STATUS, MAX_GUESSES_ALLOWED } from "@/constants"
-import { checkGuess, formatTypedGuess, makeGameBoard } from "@/utils"
+import { checkGuess, formatTypedGuess, makeGameBoard, decode, encode } from "@/utils"
 import { type GameRulesType } from '@/types/gameboardTypes';
 import { Button } from "@/components/ui/button";
 import { AnswerContext } from "@/contexts/";
@@ -16,7 +16,7 @@ const useScaffoldMode = (): GameRulesType => {
 
     const updateGameBoard = (currentGuess: string) => {
         if (gameStatus === GAME_STATUS.CONTINUE) { setGameStatus(GAME_STATUS.ACTIVE) }
-        const formattedGuess = [...formatTypedGuess(currentGuess, 'inProgress')]
+        const formattedGuess = [...formatTypedGuess(currentGuess)]
         const nextGameBoard = [...gameBoard]
         nextGameBoard[guessCount] = { id: `guess-${guessCount + 1}`, letters: formattedGuess };
         setGameboard(nextGameBoard);
@@ -33,7 +33,7 @@ const useScaffoldMode = (): GameRulesType => {
             setGameboard(nextGameBoard);
             const nextCount = guessCount + 1;
             setTotalGuesses((prev) => prev + 1)
-            if (btoa(guess) === answer) {
+            if (encode(guess) === answer) {
                 if (maxGuess === 1) {
                     toast.success(`Congrats! You climbed the top of the ladder in ${totalGuesses} guesses.`, {
                         duration: 8000,
@@ -53,7 +53,7 @@ const useScaffoldMode = (): GameRulesType => {
                 return;
             }
             if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(`The word was ${atob(answer)}. Here's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
+                toast(`The word was ${decode(answer)}. Here's an extra guess for the next game`, { duration: Infinity, action: <Button onClick={() => incrementGameboard()}>Start next game</Button> })
                 return;
             }
             setGuessCount(nextCount);

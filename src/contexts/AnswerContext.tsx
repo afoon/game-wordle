@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo, type ReactNode } from "react";
 import { WORD_LIST_URL } from '../constants'
-import { chooseRandomWord } from "@/utils";
+import { chooseRandomWord, encode } from "@/utils";
 import { AnswerContext } from "@/contexts";
 
 
@@ -19,7 +19,7 @@ export const AnswerProvider = ({children}:{children: ReactNode}) => {
           console.warn('Error fetching word list')
         }
         const wordListText = await response.text();
-        const encodedList = btoa(wordListText.toUpperCase())
+        const encodedList = encode(wordListText.toUpperCase())
         setWordList(encodedList);
         const randomWord = chooseRandomWord(encodedList);
         setAnswer(randomWord)

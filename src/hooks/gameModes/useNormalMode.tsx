@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
 import { toast } from "sonner"
 import { GAME_STATUS, MAX_GUESSES_ALLOWED } from "@/constants"
-import { checkGuess, formatTypedGuess, makeGameBoard } from "@/utils"
+import { checkGuess, formatTypedGuess, makeGameBoard , decode, encode} from "@/utils"
 import {type GameRulesType} from '@/types/gameboardTypes';
 import { AnswerContext } from "@/contexts";
 
@@ -13,7 +13,7 @@ const useNormalMode = () : GameRulesType => {
     const { resetWord } = useContext(AnswerContext);
 
     const updateGameBoard = (currentGuess: string) => {
-        const formattedGuess = [...formatTypedGuess(currentGuess, 'inProgress')]
+        const formattedGuess = [...formatTypedGuess(currentGuess)]
         const nextGameBoard = [...gameBoard]
         nextGameBoard[guessCount] = { id: `guess-${guessCount + 1}`, letters: formattedGuess };
         setGameboard(nextGameBoard);
@@ -29,7 +29,7 @@ const useNormalMode = () : GameRulesType => {
             }
             setGameboard(nextGameBoard);
             const nextCount = guessCount + 1;
-            if (btoa(guess) === answer) {
+            if (encode(guess) === answer) {
                 toast.success(`Congrats. You got in ${nextCount} ${nextCount > 1 ? "guesses" : "guess"}`, {
                     duration: 8000,
                 })
@@ -37,7 +37,7 @@ const useNormalMode = () : GameRulesType => {
                 return;
             }
             if (nextCount === MAX_GUESSES_ALLOWED) {
-                toast(atob(answer), { duration: Infinity })
+                toast(decode(answer), { duration: Infinity })
                 setGameStatus(GAME_STATUS.FINISHED);
                 return;
             }

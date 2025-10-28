@@ -1,3 +1,4 @@
+import { decode } from '@/utils';
 import {useCallback, useMemo, useState} from 'react';
 
 const useLetterStatus = () => {
@@ -7,18 +8,16 @@ const useLetterStatus = () => {
         const updateUsedLetters = (guess: string, answer: string) => {
             const matched = new Set();
             const letters = guess.split('')
-            // add the used letters to the set
             letters.forEach((letter, idx) => {
                 if (!used.has(letter)) {
                     used.add(letter);
                 }
-                if (guess.charAt(idx) === atob(answer).charAt(idx)) {
+                if (guess.charAt(idx) === decode(answer).charAt(idx)) {
                     correct.add(letter);
                 }
             })
-            // find matched letters from used
             used.forEach(letter => {
-                if (atob(answer).includes(letter)) {
+                if (decode(answer).includes(letter)) {
                     matched.add(letter);
                 }
             })

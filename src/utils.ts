@@ -1,4 +1,4 @@
-import type { GameBoardType, Letter, LetterStatusType } from "./types/gameboardTypes";
+import type { GameBoardType, Letter } from "./types/gameboardTypes";
 import z from "zod";
 
 export const getRandomValue = (max: number, min: number = 0 ) => Math.floor(Math.random() * (max - min + 1))
@@ -24,28 +24,28 @@ export const encode = (str: string): Base64URLString => {
   return btoa(str)
 }
 export const chooseRandomWord = (encodedList: string): string => {
-  const decodelist = atob(encodedList);
+  const decodelist = decode(encodedList);
   const wordList = decodelist.split('\n')
   const index = getRandomValue(wordList.length)
   const randomWord = wordList[index]
-  return btoa(randomWord);
+  return encode(randomWord);
 };
-export const formatTypedGuess = (value: string, status: LetterStatusType) => {
+export const formatTypedGuess = (value: string): Letter[] => {
   const letters = value.split("");
   return Array.from(Array(5), (_, index) => {
     return {
       id: index + 1,
       letter: letters[index] ?? "",
-      status: letters[index] ? status : "empty",
+      status: letters[index] ? 'inProgress' : "empty",
     };
   });
 };
 
 export const checkGuess = (guess: string, answer: string): Letter[] => {
   const response: Letter[] = [];
-  const answerLetters = atob(answer).split("");
+  const answerLetters = decode(answer).split("");
   for (let i = 0; i < 5; i++) {
-    if (guess.charAt(i) === atob(answer).charAt(i)) {
+    if (guess.charAt(i) === decode(answer).charAt(i)) {
       answerLetters[i] = "";
       response[i] = {
         letter: guess.charAt(i),
@@ -54,7 +54,7 @@ export const checkGuess = (guess: string, answer: string): Letter[] => {
     }
   }
   for (let i = 0; i < 5; i++) {
-    if (guess.charAt(i) === atob(answer).charAt(i)) {
+    if (guess.charAt(i) === decode(answer).charAt(i)) {
       continue;
     }
     if (answerLetters.includes(guess.charAt(i))) {
