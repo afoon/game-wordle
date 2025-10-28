@@ -14,7 +14,9 @@ import useLetterStatus from "@/hooks/useLetterStatus"
 
 const showErrorMessage = (error: z.ZodError) => {
     if (error instanceof z.ZodError) {
-        toast(error.issues[0].message)
+        toast(error.issues[0].message, {
+            duration: 1500
+        })
     }
 }
 
@@ -82,7 +84,7 @@ const GameMode = ({ gameMode }: { gameMode: () => GameRulesType }) => {
         <div className="flex flex-col gap-4 items-center">
             <GameBoard gameBoard={gameBoard} />
             {gameStatus === GAME_STATUS.FINISHED && <Button onClick={onReset}> Play again ? </Button>}
-            <form className="grid gap-2 my-4" onSubmit={onSubmit}>
+            <form className="hidden sm:grid gap-2 my-4" onSubmit={onSubmit}>
                 <Label htmlFor="guess">Enter guess:</Label>
                 <div className="flex w-full gap-2 items-center self-stretch min-w-xs">
                     <Input id="guess" value={guess} disabled={gameOver} aria-disabled={gameOver} onChange={e => onGuessUpdate(e.target.value.toUpperCase())} />
