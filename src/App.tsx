@@ -8,6 +8,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import ScaffoldingIcon from '@/assets/icons/scaffolding.svg?react'
 import WordGameIcon from '@/assets/icons/wordGame.svg?react'
 import { useGameMode } from './contexts'
+import WelcomeModal from './components/Game/Modals/WelcomeModal'
 
 
 const Header = () => {
@@ -26,6 +27,7 @@ function App() {
   return (
     <ThemeProvider>
       <GameModeProvider>
+        <WelcomeModal/>
         <KeyboardProvider>
           <div className="flex justify-center gap-2 md:gap-10 flex-wrap-reverse  mt-2
            sm:mt-26 w-full">
